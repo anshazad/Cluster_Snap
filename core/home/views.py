@@ -18,4 +18,23 @@ def landing(request):
 def loginUser(request):
     pass
 
+def index(request):
+    pass
+
+def loginUser(request):
+    pass
+
+def logoutUser(request):
+    pass
+
+def registerUser(request):
+    pass
+
+def registerUser2(request):
+    pass
+
+def process(request):
+    pass
+
+
 
