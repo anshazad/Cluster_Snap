@@ -25,7 +25,8 @@ def loginUser(request):
     pass
 
 def logoutUser(request):
-    pass
+    logout(request)
+    return redirect("/login")
 
 def registerUser(request):
     pass
