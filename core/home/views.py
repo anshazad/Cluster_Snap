@@ -58,7 +58,9 @@ def loginUser(request):
     return render(request, "login.html")
 
 def logoutUser(request):
-    pass
+    # add logout function here
+    logout(request)
+    return redirect("landing")
 
 def registerUser(request):
     pass
