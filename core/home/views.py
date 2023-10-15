@@ -16,10 +16,34 @@ def landing(request):
     return render(request, "landing.html")
 
 def loginUser(request):
-    pass
+    if request.method == "POST":
+        roomcode = request.POST.get("roomCode")
+        password = request.POST.get("inputPassword")
+        user = authenticate(username=roomcode, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("/")
+        else:
+            return render(request, "login.html")
+    return render(request, "login.html")
 
 def index(request):
-    pass
+    user = request.user
+    if user.is_anonymous:
+        return redirect("/landing")
+
+    elif request.method == "POST":
+        images = request.FILES.getlist("images")
+        for image in images:
+            print(image)
+            photo = Photo.objects.create(user=user, image=image)
+            photo.save()
+
+    photos = Photo.objects.filter(user=user)
+    count = photos.count()
+
+    context = {"photos": photos, "count": count}
+    return render(request, "index.html", context)
 
 def loginUser(request):
     pass
