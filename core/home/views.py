@@ -90,6 +90,22 @@ def process(request):
             for (box, enc) in zip(boxes, encodings)
         ]
         data.extend(d)
+    data = np.array(data)
+    encodings = [d["encoding"] for d in data]
+    # cluster the embeddings
+    clt = DBSCAN(
+        metric="cosine",
+        n_jobs=-1,
+        min_samples=1,
+        eps=0.06,
+        # for cosine use eps="0.06"
+        # for metric="euclidean" use eps="0.55"
+    )  # of parallel jobs to run (-1 will use all CPUs)
+    clt.fit(encodings)
+    # determine the total number of unique faces found in the dataset
+    labelIDs = np.unique(clt.labels_)
+    numUniqueFaces = len(np.where(labelIDs > -1)[0])
+
 
 
 
