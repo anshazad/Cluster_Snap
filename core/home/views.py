@@ -71,5 +71,25 @@ def process(request):
     imagePaths = [("static/images/" + str(photo.image)) for photo in photos]
     data = []
 
+    for (i, imagePath) in enumerate(imagePaths):
+        # load the input image and convert it from RGB (OpenCV ordering)
+        # to dlib ordering (RGB)
+        print("[INFO] processing image {}/{}".format(i + 1, len(imagePaths)))
+        print(imagePath)
+        image = cv2.imread(imagePath)
+        rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        # detect the (x, y)-coordinates of the bounding boxes
+        # corresponding to each face in the input image
+        boxes = face_recognition.face_locations(rgb, model="hog")
+        # compute the facial embedding for the face
+        encodings = face_recognition.face_encodings(rgb, boxes)
+        # build a dictionary of the image path, bounding box location,
+        # and facial encodings for the current image
+        d = [
+            {"imagePath": imagePath, "loc": box, "encoding": enc}
+            for (box, enc) in zip(boxes, encodings)
+        ]
+        data.extend(d)
+
 
 
