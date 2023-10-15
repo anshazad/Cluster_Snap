@@ -58,7 +58,18 @@ def registerUser2(request):
     pass
 
 def process(request):
-    pass
+    user = request.user
+    if user.is_anonymous:
+        return redirect("/login")
+    Person.objects.filter(user=user).delete()
+    photos = Photo.objects.filter(user=user)
+    if photos.count() == 0:
+        context = {
+            "error_message": "No photos to process.\n Upload some photos and then Try again"
+        }
+        return render(request, "404.html", context)
+    imagePaths = [("static/images/" + str(photo.image)) for photo in photos]
+    data = []
 
 
 
