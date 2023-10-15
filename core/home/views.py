@@ -46,11 +46,21 @@ def index(request):
     return render(request, "index.html", context)
 
 def loginUser(request):
-    pass
+    if request.method == "POST":
+        roomcode = request.POST.get("roomCode")
+        password = request.POST.get("inputPassword")
+        user = authenticate(username=roomcode, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("/")
+        else:
+            return render(request, "login.html")
+    return render(request, "login.html")
 
 def logoutUser(request):
     logout(request)
     return redirect("/login")
+
 
 def registerUser(request):
     pass
